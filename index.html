@@ -56,6 +56,14 @@ figure{margin:0}
 .ph{aspect-ratio:3/2;background:linear-gradient(135deg,#cfdad3,#b7c7bd);display:grid;place-items:center;color:#5b6d66;font-size:14px;overflow:hidden}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 figcaption{font-size:13px;color:var(--muted);padding:6px 18px 0}
+/* map */
+.mapbox{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--card)}
+.mapbox iframe{display:block;width:100%;height:420px;border:0}
+.mapbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.mapbar select{font:inherit;padding:6px 10px;border:1px solid var(--river);border-radius:6px;background:var(--card);color:var(--ink)}
+.btn{display:inline-block;padding:6px 16px;border-radius:999px;background:var(--river);color:#fff;text-decoration:none;font-size:15px}
+.btn:hover{background:var(--red)}
+.stop .glink{font-size:14px;display:inline-block;margin-top:8px}
 /* culture */
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
 .cols div{border-top:3px solid var(--earth);padding-top:10px}
@@ -66,7 +74,7 @@ footer{max-width:1020px;margin:48px auto 0;padding:24px 20px 48px;border-top:1px
 </head>
 <body>
 <nav aria-label="主選單">
-  <a href="#routes">遷徙路線</a><a href="#stops">尋根足跡</a><a href="#culture">歷史文化</a><a href="#food">在地美食</a>
+  <a href="#map">地圖</a><a href="#routes">遷徙路線</a><a href="#stops">尋根足跡</a><a href="#culture">歷史文化</a><a href="#food">在地美食</a>
 </nav>
 
 <header class="hero">
@@ -85,6 +93,18 @@ footer{max-width:1020px;margin:48px auto 0;padding:24px 20px 48px;border-top:1px
     <text x="745" y="80" style="fill:#b3261e">黑水溝</text>
   </svg>
 </header>
+
+<section id="map">
+  <h2>地圖</h2>
+  <p class="lead">選擇景點查看位置，或一鍵在 Google 地圖開啟整條陸路路線。</p>
+  <div class="mapbar">
+    <label for="mapSel">景點</label>
+    <select id="mapSel"></select>
+    <a class="btn" id="openMap" target="_blank" rel="noopener">在 Google 地圖開啟</a>
+    <a class="btn" id="openRoute" target="_blank" rel="noopener">廈門到金沙村路線</a>
+  </div>
+  <div class="mapbox"><iframe id="mapFrame" title="Google 地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+</section>
 
 <section id="routes">
   <h2>客家五次大遷徙</h2>
@@ -150,7 +170,33 @@ const foods=[
  {r:"台灣",n:"擂茶",d:"茶葉、花生、芝麻研磨沖泡，是客家待客的心意。",img:"leicha.jpg"}
 ];
 
-const card=(x,meta)=>`<article class="stop"><figure><div class="ph"><img src="images/${x.img}" alt="${x.n}" loading="lazy" onerror="this.replaceWith(document.createTextNode('照片待補'))"></div></figure><div class="body"><h3>${x.n}</h3>${meta?`<div class="where">${meta}</div>`:""}<p>${x.d}</p></div></article>`;
+/* Google 地圖搜尋關鍵字（不準時改這裡；也可換成座標，如 "24.57,118.10"） */
+const Q={
+ "廈門集美學村":"集美學村 廈門",
+ "樟林古港":"樟林古港 汕頭澄海",
+ "西堤公園":"西堤公園 汕頭",
+ "石窟河與長潭":"長潭旅遊度假區 蕉嶺",
+ "梅州客家博物館與梅江橋":"中國客家博物館 梅州",
+ "大埔花萼樓":"花萼樓 大埔",
+ "蕉嶺金沙村":"金沙村 蕉嶺縣",
+ "丘逢甲故居與謝晉元故居":"丘逢甲故居 蕉嶺",
+ "韓江與三河壩":"三河壩 大埔",
+ "屏東萬巒五溝水":"五溝水 萬巒 屏東"
+};
+const gm=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const card=(x,meta)=>`<article class="stop"><figure><div class="ph"><img src="images/${x.img}" alt="${x.n}" loading="lazy" onerror="this.replaceWith(document.createTextNode('照片待補'))"></div></figure><div class="body"><h3>${x.n}</h3>${meta?`<div class="where">${meta}</div>`:""}<p>${x.d}</p>${Q[x.n]?`<a class="glink" href="${gm(Q[x.n])}" target="_blank" rel="noopener">在 Google 地圖查看</a>`:""}</div></article>`;
+
+/* 地圖區 */
+const sel=document.getElementById("mapSel"),frame=document.getElementById("mapFrame");
+sel.innerHTML=stops.filter(s=>Q[s.n]).map(s=>`<option>${s.n}</option>`).join("");
+function showMap(){
+  const q=Q[sel.value];
+  frame.src="https://maps.google.com/maps?q="+encodeURIComponent(q)+"&z=12&output=embed&hl=zh-TW";
+  document.getElementById("openMap").href=gm(q);
+}
+sel.addEventListener("change",showMap); showMap();
+const path=["廈門集美學村","樟林古港","梅州客家博物館與梅江橋","大埔花萼樓","蕉嶺金沙村"].map(n=>Q[n]);
+document.getElementById("openRoute").href="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(path[0])+"&destination="+encodeURIComponent(path[path.length-1])+"&waypoints="+path.slice(1,-1).map(encodeURIComponent).join("%7C");
 
 document.getElementById("timeline").innerHTML=eras.map(e=>`<li><button aria-expanded="false"><span class="era">${e.era}</span><h3>${e.t}</h3><p class="more">${e.d}</p></button></li>`).join("");
 document.getElementById("timeline").addEventListener("click",ev=>{
