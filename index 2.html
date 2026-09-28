@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>尋根之旅：從梅州山城到屏東六堆</title>
+<meta name="description" content="沿著石窟河、韓江到汕頭港，追溯客家林氏渡海來台的足跡。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500&display=swap">
+<style>
+:root{--bg:#eef1ec;--ink:#1b2a2a;--muted:#55635f;--river:#1f5f5b;--earth:#8a6a3b;--red:#b3261e;--line:#c9d1cb;--card:#f8faf7}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.8 "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+h1,h2,h3{font-family:"Noto Serif TC","Songti TC",serif;line-height:1.35;margin:0}
+a{color:var(--river)}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+nav{position:sticky;top:0;z-index:5;background:rgba(238,241,236,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;gap:20px;padding:12px 20px;overflow-x:auto;white-space:nowrap}
+nav a{text-decoration:none;color:var(--ink);font-weight:500}
+nav a:hover{color:var(--red)}
+section{max-width:1020px;margin:0 auto;padding:72px 20px 24px}
+h2{font-size:clamp(26px,4vw,36px);margin-bottom:8px}
+.lead{color:var(--muted);max-width:40em;margin:0 0 32px}
+/* hero */
+.hero{max-width:1020px;margin:0 auto;padding:56px 20px 0}
+.hero h1{font-size:clamp(34px,7vw,64px);letter-spacing:.04em}
+.hero p{max-width:34em;color:var(--muted)}
+.route{width:100%;height:auto;margin-top:24px}
+.route .river{fill:none;stroke:var(--river);stroke-width:3;stroke-linecap:round;stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 3.2s .3s ease forwards}
+.route .sea{fill:none;stroke:var(--red);stroke-width:3;stroke-dasharray:2 9;stroke-linecap:round}
+.route text{font:500 15px "Noto Sans TC",sans-serif;fill:var(--ink)}
+.route circle{fill:var(--bg);stroke:var(--river);stroke-width:3}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* timeline */
+.tl{list-style:none;margin:0;padding:0 0 0 28px;border-left:3px solid var(--river)}
+.tl li{position:relative;margin:0 0 14px}
+.tl li::before{content:"";position:absolute;left:-38px;top:20px;width:15px;height:15px;border-radius:50%;background:var(--bg);border:3px solid var(--river)}
+.tl button{all:unset;cursor:pointer;display:block;width:100%;padding:12px 16px;background:var(--card);border:1px solid var(--line);border-radius:6px}
+.tl button:focus-visible{outline:3px solid var(--red)}
+.tl .era{color:var(--earth);font-weight:500;font-size:15px}
+.tl h3{font-size:20px}
+.tl .more{display:none;margin:8px 0 0;color:var(--muted)}
+.tl li.open .more{display:block}
+.tl li.open::before{background:var(--red);border-color:var(--red)}
+/* filters + stops */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tabs button{font:inherit;cursor:pointer;padding:6px 16px;border:1px solid var(--river);border-radius:999px;background:transparent;color:var(--river)}
+.tabs button[aria-pressed=true]{background:var(--river);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px}
+.stop{background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.stop .body{padding:16px 18px 20px}
+.stop h3{font-size:20px}
+.stop .where{font-size:14px;color:var(--earth)}
+.stop p{margin:8px 0 0;font-size:16px}
+figure{margin:0}
+.ph{aspect-ratio:3/2;background:linear-gradient(135deg,#cfdad3,#b7c7bd);display:grid;place-items:center;color:#5b6d66;font-size:14px;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+figcaption{font-size:13px;color:var(--muted);padding:6px 18px 0}
+/* map */
+.mapbox{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--card)}
+.mapbox iframe{display:block;width:100%;height:420px;border:0}
+.mapbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.mapbar select{font:inherit;padding:6px 10px;border:1px solid var(--river);border-radius:6px;background:var(--card);color:var(--ink)}
+.btn{display:inline-block;padding:6px 16px;border-radius:999px;background:var(--river);color:#fff;text-decoration:none;font-size:15px}
+.btn:hover{background:var(--red)}
+.stop .glink{font-size:14px;display:inline-block;margin-top:8px}
+/* culture */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.cols div{border-top:3px solid var(--earth);padding-top:10px}
+.cols h3{font-size:20px}
+footer{max-width:1020px;margin:48px auto 0;padding:24px 20px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:15px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.route .river{animation:none;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<nav aria-label="主選單">
+  <a href="#map">地圖</a><a href="#routes">遷徙路線</a><a href="#stops">尋根足跡</a><a href="#culture">歷史文化</a><a href="#food">在地美食</a>
+</nav>
+
+<header class="hero">
+  <h1>尋根之旅</h1>
+  <p>「我是誰、從哪來？」沿著石窟河、韓江到汕頭港，再渡過黑水溝，追隨客家林氏先民從蕉嶺金沙到屏東六堆的路。</p>
+  <svg class="route" viewBox="0 0 900 200" role="img" aria-label="路線示意：蕉嶺、梅州、大埔、汕頭，橫渡台灣海峽到屏東萬巒">
+    <path class="river" d="M40 60 C140 60 160 120 260 110 S400 50 500 100 S620 150 690 110"/>
+    <path class="sea" d="M690 110 C760 90 800 120 860 140"/>
+    <g>
+      <circle cx="40" cy="60" r="7"/><text x="20" y="42">蕉嶺金沙</text>
+      <circle cx="260" cy="110" r="7"/><text x="238" y="145">梅州</text>
+      <circle cx="500" cy="100" r="7"/><text x="478" y="78">大埔三河壩</text>
+      <circle cx="690" cy="110" r="7"/><text x="660" y="145">汕頭港</text>
+      <circle cx="860" cy="140" r="7"/><text x="800" y="175">屏東萬巒</text>
+    </g>
+    <text x="745" y="80" style="fill:#b3261e">黑水溝</text>
+  </svg>
+</header>
+
+<section id="map">
+  <h2>地圖</h2>
+  <p class="lead">選擇景點查看位置，或一鍵在 Google 地圖開啟整條陸路路線。</p>
+  <div class="mapbar">
+    <label for="mapSel">景點</label>
+    <select id="mapSel"></select>
+    <a class="btn" id="openMap" target="_blank" rel="noopener">在 Google 地圖開啟</a>
+    <a class="btn" id="openRoute" target="_blank" rel="noopener">廈門到金沙村路線</a>
+  </div>
+  <div class="mapbox"><iframe id="mapFrame" title="Google 地圖" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+</section>
+
+<section id="routes">
+  <h2>客家五次大遷徙</h2>
+  <p class="lead">點選每個時期，展開當時的背景。</p>
+  <ol class="tl" id="timeline"></ol>
+</section>
+
+<section id="stops">
+  <h2>我的尋根足跡</h2>
+  <p class="lead">從廈門出發，經汕頭、梅州到蕉嶺金沙村。</p>
+  <div class="tabs" id="tabs" role="group" aria-label="依地區篩選"></div>
+  <div class="grid" id="stopGrid"></div>
+</section>
+
+<section id="culture">
+  <h2>歷史與文化</h2>
+  <div class="cols">
+    <div><h3>客家精神</h3><p>「硬頸精神」、「耕讀傳家」：山多田少，仍重視讀書與敬宗睦族。</p></div>
+    <div><h3>客家語</h3><p>保留大量古漢語音韻與詞彙，被稱為古漢語的活化石。</p></div>
+    <div><h3>防禦型建築</h3><p>梅州圍龍屋與福建土樓，讓整個宗族聚居、共同防衛。</p></div>
+  </div>
+</section>
+
+<section id="food">
+  <h2>在地美食</h2>
+  <div class="tabs" id="foodTabs" role="group" aria-label="依地區篩選美食"></div>
+  <div class="grid" id="foodGrid"></div>
+</section>
+
+<footer>
+  <p>文字與照片為作者尋根之旅紀錄。歷史細節請以族譜與地方文獻為準。</p>
+</footer>
+
+<script>
+/* ===== 內容資料：只需修改這裡 =====
+   照片放進 images/ 資料夾，檔名對應 img 欄位即可（找不到時會顯示灰色佔位） */
+const eras=[
+ {era:"第一期・西晉",t:"八王之亂與五胡亂華",d:"中原戰亂，人群渡江南下，遷至江淮地區。"},
+ {era:"第二期・唐末",t:"黃巢之亂",d:"往南進入贛南（江西）與閩西（福建汀州）。"},
+ {era:"第三期・南宋",t:"靖康之難與崖山之戰",d:"深入粵東梅州一帶，客家民系在此正式形成。"},
+ {era:"第四期・明清",t:"湖廣填四川與移居台灣",d:"人多地少，部分族群渡海到台灣，如苗栗、新竹、屏東六堆、高雄美濃。"},
+ {era:"第五期・清末民國",t:"下南洋與遠赴歐美",d:"前往馬來西亞、印尼、新加坡，以及歐美各地。"}
+];
+const stops=[
+ {r:"福建",n:"廈門集美學村",w:"福建廈門",d:"陳嘉庚的故鄉。建築特色為「穿西裝，戴斗笠」，龍舟池與南薰樓值得一看。",img:"jimei.jpg"},
+ {r:"潮汕",n:"樟林古港",w:"廣東汕頭澄海",d:"「紅頭船」的故鄉，清代潮汕人下南洋的起點。",img:"zhanglin.jpg"},
+ {r:"潮汕",n:"西堤公園",w:"廣東汕頭老城區",d:"以僑批（家書兼匯款）為主題，昔日過番出海口。",img:"xiti.jpg"},
+ {r:"梅州",n:"石窟河與長潭",w:"廣東梅州蕉嶺",d:"蕉嶺的母親河，先民乘竹筏順流南下，長潭有「小三峽」之稱。",img:"shikuhe.jpg"},
+ {r:"梅州",n:"梅州客家博物館與梅江橋",w:"廣東梅州",d:"世界客都。可先在此認識客家遷徙史，再看梅江夜景。",img:"meizhou.jpg"},
+ {r:"梅州",n:"大埔花萼樓",w:"廣東梅州大埔",d:"保存完整的環形土圍樓，也是林氏由閩入粵的重要門戶。",img:"huaelou.jpg"},
+ {r:"梅州",n:"蕉嶺金沙村",w:"廣東梅州蕉嶺新鋪鎮",d:"屏東六堆林氏的原鄉，山環水抱，有「回龍顧主」的格局。",img:"jinsha.jpg"},
+ {r:"梅州",n:"丘逢甲故居與謝晉元故居",w:"廣東梅州蕉嶺",d:"愛國詩人與抗日名將的故鄉，可順路參觀。",img:"jiaoling-people.jpg"},
+ {r:"潮汕",n:"韓江與三河壩",w:"廣東梅州大埔 / 潮州",d:"梅江與汀江在此匯合，一路南流入海。",img:"hanjiang.jpg"},
+ {r:"台灣",n:"屏東萬巒五溝水",w:"台灣屏東",d:"先鋒堆所在，客家林氏宗祠「西河堂」聚落。",img:"wanluan.jpg"}
+];
+const foods=[
+ {r:"梅州",n:"梅州醃麵＋豬人頭湯",d:"在地早餐代表，蒜香搭配鮮美湯頭。",img:"yanmian.jpg"},
+ {r:"梅州",n:"大埔算盤子",d:"芋頭與木薯粉揉成算盤珠狀，Q 彈，與肉碎爆炒。",img:"suanpanzi.jpg"},
+ {r:"梅州",n:"客家鹽焗雞",d:"古法用粗鹽烘烤，皮香肉嫩。",img:"yanju.jpg"},
+ {r:"閩西",n:"客家釀豆腐",d:"在豆腐中嵌入肉餡再煎煮的經典菜。",img:"niangdoufu.jpg"},
+ {r:"閩西",n:"黃黃米果與芋子包",d:"閩西客家祭祀與節慶的傳統小吃。",img:"miguo.jpg"},
+ {r:"台灣",n:"客家小炒",d:"魷魚、五花肉、豆干爆炒，香氣十足。",img:"xiaochao.jpg"},
+ {r:"台灣",n:"擂茶",d:"茶葉、花生、芝麻研磨沖泡，是客家待客的心意。",img:"leicha.jpg"}
+];
+
+/* Google 地圖搜尋關鍵字（不準時改這裡；也可換成座標，如 "24.57,118.10"） */
+const Q={
+ "廈門集美學村":"集美學村 廈門",
+ "樟林古港":"樟林古港 汕頭澄海",
+ "西堤公園":"西堤公園 汕頭",
+ "石窟河與長潭":"長潭旅遊度假區 蕉嶺",
+ "梅州客家博物館與梅江橋":"中國客家博物館 梅州",
+ "大埔花萼樓":"花萼樓 大埔",
+ "蕉嶺金沙村":"金沙村 蕉嶺縣",
+ "丘逢甲故居與謝晉元故居":"丘逢甲故居 蕉嶺",
+ "韓江與三河壩":"三河壩 大埔",
+ "屏東萬巒五溝水":"五溝水 萬巒 屏東"
+};
+const gm=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+const card=(x,meta)=>`<article class="stop"><figure><div class="ph"><img src="images/${x.img}" alt="${x.n}" loading="lazy" onerror="this.replaceWith(document.createTextNode('照片待補'))"></div></figure><div class="body"><h3>${x.n}</h3>${meta?`<div class="where">${meta}</div>`:""}<p>${x.d}</p>${Q[x.n]?`<a class="glink" href="${gm(Q[x.n])}" target="_blank" rel="noopener">在 Google 地圖查看</a>`:""}</div></article>`;
+
+/* 地圖區 */
+const sel=document.getElementById("mapSel"),frame=document.getElementById("mapFrame");
+sel.innerHTML=stops.filter(s=>Q[s.n]).map(s=>`<option>${s.n}</option>`).join("");
+function showMap(){
+  const q=Q[sel.value];
+  frame.src="https://maps.google.com/maps?q="+encodeURIComponent(q)+"&z=12&output=embed&hl=zh-TW";
+  document.getElementById("openMap").href=gm(q);
+}
+sel.addEventListener("change",showMap); showMap();
+const path=["廈門集美學村","樟林古港","梅州客家博物館與梅江橋","大埔花萼樓","蕉嶺金沙村"].map(n=>Q[n]);
+document.getElementById("openRoute").href="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(path[0])+"&destination="+encodeURIComponent(path[path.length-1])+"&waypoints="+path.slice(1,-1).map(encodeURIComponent).join("%7C");
+
+document.getElementById("timeline").innerHTML=eras.map(e=>`<li><button aria-expanded="false"><span class="era">${e.era}</span><h3>${e.t}</h3><p class="more">${e.d}</p></button></li>`).join("");
+document.getElementById("timeline").addEventListener("click",ev=>{
+  const b=ev.target.closest("button"); if(!b)return;
+  const li=b.parentElement, open=li.classList.toggle("open");
+  b.setAttribute("aria-expanded",open);
+});
+
+function filtered(list,tabsId,gridId,meta){
+  const regions=["全部",...new Set(list.map(x=>x.r))];
+  const tabs=document.getElementById(tabsId), grid=document.getElementById(gridId);
+  const show=r=>{
+    grid.innerHTML=list.filter(x=>r==="全部"||x.r===r).map(x=>card(x,meta?x.w:"")).join("");
+    [...tabs.children].forEach(b=>b.setAttribute("aria-pressed",b.textContent===r));
+  };
+  tabs.innerHTML=regions.map(r=>`<button aria-pressed="false">${r}</button>`).join("");
+  tabs.addEventListener("click",e=>{if(e.target.tagName==="BUTTON")show(e.target.textContent)});
+  show("全部");
+}
+filtered(stops,"tabs","stopGrid",true);
+filtered(foods,"foodTabs","foodGrid",false);
+</script>
+</body>
+</html>
